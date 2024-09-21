@@ -2,7 +2,13 @@
 <!-- SPDX-FileCopyrightText: Copyright 2024 Sam Blenny -->
 # Pumpkin Numpad Tester
 
-**WORK IN PROGRESS (ALPHA)**
+It's almost Fall, so here's a pumpkin themed numeric keypad tester. The display
+uses CircuitPython displayio TileGrid sprites to indicate key presses. Details
+of the USB HID reports get logged to the serial console. The hardware is an
+ESP32-S3 Feather TFT, a MAX3421E USB Host FeatherWing, and a Perixx USB numeric
+keypad.
+
+![video screenshot showing HID scancodes in a terminal window, an overhead view of the Feather TFT and numeric keypad, and closeup of pumpkins on the Feather TFT screen](pumpkin-numpad-tester.jpeg)
 
 
 ## Hardware
