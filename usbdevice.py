@@ -12,9 +12,12 @@ from usb.core import USBError
 class USBDevice:
 
     def __init__(self, vid, pid,
-        interface=0, endpoint=0x81, timeout_ms=10, max_packet_size=64
+        interface=0, endpoint=0x81, timeout_ms=300, max_packet_size=8
     ):
-        """Remember the config parameters for this USB device."""
+        """Remember the config parameters for this USB device.
+        CAUTION: setting timeout_ms too low can *severely* reduce the overall
+        system responsiveness
+        """
         # These describe properties of the USB device
         self.vid = vid
         self.pid = pid
@@ -75,9 +78,10 @@ class USBDevice:
         # Generator loop (note how this uses yield instead of return)
         while True:
             try:
-                # Poll device endpoint
-                n = _devread(_ENDPOINT, _buf, timeout=_MS)
-                yield (n, _buf)
+                # Poll device endpoint. This seems to always return 0 with no
+                # regard for how many bytes were actually written to _buf
+                _ = _devread(_ENDPOINT, _buf, timeout=_MS)
+                yield _buf
             except core.USBTimeoutError as e:
                 # No report available. This happens a lot. It's fine.
                 yield None

@@ -55,6 +55,31 @@ If you are unfamiliar with soldering headers, you might want to read:
 - [How To Solder Headers](https://learn.adafruit.com/how-to-solder-headers)
 
 
+## Sprites
+
+I made these sprites in the Pixaki 4 app for iPad. The idea is that the text
+gets darker when you press the corresponding keys on the numeric keypad. The
+first two images show how the light and dark text will look on the screen. The
+third image shows a zoomed in view of the actual spritesheet. All the grid
+lines in the screenshots are set for 8x8 pixels. I use these screenshots to
+write the code for arranging `displayio.TileGrid` sprites.
+
+
+### Screenshot of Dark Text Pumpkins
+
+![Pixaki screenshot showing 2 pumpkins with dark text on them](pumpkin-dark-text-screenshot.png)
+
+
+### Screenshot of Light Text Pumpkins
+
+![Pixaki screenshot showing 2 pumpkins with light text on them](pumpkin-light-text-screenshot.png)
+
+
+### Screenshot of Spritesheet
+
+![Pixaki screenshot showing the spritesheet](pumpkin-spritesheet-screenshot.png)
+
+
 ## Updating CircuitPython
 
 **NOTE: To update CircuitPython on the ESP32-S3 TFT Feather with 2MB PSRAM and
