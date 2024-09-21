@@ -40,10 +40,10 @@
 
 ### Tools and Consumables
 
-You will need solder and soldering tools.
+You will need soldering tools and solder.
 
 
-### Solder the Headers
+### Soldering the Headers
 
 The TFT Feather, USB Host FeatherWing and the Doubler all come in kit form, so
 you will need to solder the headers.
