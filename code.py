@@ -43,9 +43,23 @@ from usbdevice import USBDevice
 
 def main():
     release_displays()
+    _collect = gc.collect
+
+    # USB HID Scancodes for numeric keypad. For the big list, refer to
+    # chapter 10, "Keyboard/Keypad Page (0x07)" of the USB HID Usages and
+    # Descriptions pdf at https://usb.org/sites/default/files/hut1_5.pdf
+    SCANCODES = {
+        0x01: 'ErrRollOver',
+        0x2a: 'Bksp', 0x2b: 'Tab',
+        0x49: 'Ins',  0x4a: 'Home',  0x4b: 'PgUp', 0x4c: 'Del', 0x4d: 'End',
+        0x4e: 'PgDn', 0x4f: 'Right', 0x50: 'Left', 0x51: 'Down', 0x52: 'Up',
+        0x54: '/', 0x55: '*', 0x56: '-', 0x57: '+', 0x58: 'Enter',
+        0x59: '1', 0x5a: '2', 0x5b: '3', 0x5c: '4', 0x5d: '5',
+        0x5e: '6', 0x5f: '7', 0x60: '8', 0x61: '9', 0x62: '0',
+        0x63: '.',
+    }
 
     # Cache frequently used callables to save time on dictionary name lookups
-    _collect = gc.collect
     _unpack = unpack
     (_VID, _PID) = (const(0x04d9), const(0xa02a))  # Perixx PPD-202 numpad
     _FINDING_DEVICE = 'Finding USB device %04x:%04x...' % (_VID, _PID)
@@ -89,9 +103,17 @@ def main():
                 for report in numpad.poll():
                     if not (report is None):
                         (n, bytes_) = report
-                        # first two bytes seem to always be 0, so skip those
-                        keyscans = [int(b) for b in bytes_[2:8]]
-                        print(keyscans)
+                        # Notes on contents of bytes_ (the HID report)
+                        # - codes[0] is 0 (proably modifier bitfield)
+                        # - codes[1] is 0 (may be reserved?)
+                        # - codes[2:8] have key scancodes
+                        # CAUTION: the bytes_[2:8] here hides modifiers!
+                        codes = [int(b) for b in bytes_[2:8]]
+                        hex_codes = ['%02x' % c for c in codes]
+                        # Look up names for the scancodes, allowing for
+                        # possibility of numlock may be either on or off
+                        names = [SCANCODES[n] for n in codes if n != 0]
+                        print(' '.join(hex_codes), "--", ' '.join(names))
                 # If inner loop stopped, device connection was lost
                 print("USB device disconnected")
                 print(_FINDING_DEVICE)
